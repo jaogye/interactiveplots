@@ -1,16 +1,10 @@
-import sqlite3
 import numpy as np 
 import matplotlib.pyplot as plt 
-import pandas as pd 
-import matplotlib
 from sklearn.decomposition import PCA 
 import wx 
 import wx.lib.mixins.listctrl as listmix
 from wx.lib.agw import ultimatelistctrl as ULC
-import statistics 
 import math
-import csv
-from scipy import stats
 
 
 APPNAME='First Version'
@@ -18,8 +12,6 @@ APPVERSION='1.0'
 MAIN_WIDTH=600
 MAIN_HEIGHT=600
 THRESHOLD = 20
-
-
 
 class ExamplePanel(wx.Panel, listmix.ColumnSorterMixin):
     def __init__(self, parent):
@@ -72,10 +64,16 @@ class ExamplePanel(wx.Panel, listmix.ColumnSorterMixin):
         mainSizer.Add(vSizer2, 0, wx.ALL)
 
         self.SetSizerAndFit(mainSizer)
+
+    def OnClickAbout(self, event):
+
+        wx.MessageBox('Window Information', 'About',
+            wx.OK | wx.ICON_INFORMATION)
+
         
     def OnClickPlot(self,event):
         if self.pathname != "":
-            self.plot()
+           self.plot()
         else:
            wx.LogError("First, must open a file")
 
@@ -92,12 +90,6 @@ class ExamplePanel(wx.Panel, listmix.ColumnSorterMixin):
         self.pathname = fileDialog.GetPath()
         self.list.DeleteAllItems()
         self.loadData()
-
-    def OnClickAbout(self, event):
-
-        wx.MessageBox('Window Information', 'About',
-            wx.OK | wx.ICON_INFORMATION)
-        
 
     def loadData(self):
 
@@ -140,6 +132,7 @@ class ExamplePanel(wx.Panel, listmix.ColumnSorterMixin):
                  line2 = line     
                  line = file1.readline() 
                  count = count + 1
+
           file1.close() 
 
        except IOError:
