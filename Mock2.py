@@ -19,14 +19,6 @@ MAIN_WIDTH=600
 MAIN_HEIGHT=600
 THRESHOLD = 20
 
-def autolabel(rects,ax):
-    for rect in rects:
-        height = rect.get_height()
-        ax.annotate('{}'.format(height),
-                    xy=(rect.get_x() + rect.get_width() / 2, height),
-                    xytext=(0, 3),  # 3 points vertical offset
-                    textcoords="offset points",
-                    ha='center', va='bottom')
 
 
 class ExamplePanel(wx.Panel, listmix.ColumnSorterMixin):
@@ -45,9 +37,9 @@ class ExamplePanel(wx.Panel, listmix.ColumnSorterMixin):
         self.cmbInd.SetSelection(1)
 
         self.list = ULC.UltimateListCtrl(self, -1, pos=(300,20), size=(400,600), agwStyle=ULC.ULC_REPORT|ULC.ULC_HAS_VARIABLE_ROW_HEIGHT)
-        self.list.InsertColumn(0, "Code")
-        self.list.InsertColumn(1, "N. Obs.")
-        self.list.InsertColumn(2, "Distance")
+        self.list.InsertColumn(0, "C1")
+        self.list.InsertColumn(1, "C2")
+        self.list.InsertColumn(2, "C3")
 
         self.Bind(wx.EVT_LIST_COL_CLICK,      self.OnColClick, self.list)
         self.Bind(wx.EVT_LIST_ITEM_SELECTED,  self.OnItemClick, self.list)
@@ -65,10 +57,15 @@ class ExamplePanel(wx.Panel, listmix.ColumnSorterMixin):
         self.bplot =wx.Button(self, label="Plot")
         self.Bind(wx.EVT_BUTTON, self.OnClickPlot,self.bplot)
 
+        # clear button
+        self.babout =wx.Button(self, label="About")
+        self.Bind(wx.EVT_BUTTON, self.OnClickAbout,self.babout)
+
         hSizer.Add(self.lblInd)
         hSizer.Add(self.cmbInd)
         vSizer.Add(self.bopen)
         vSizer.Add(self.bplot)
+        vSizer.Add(self.babout)
         vSizer2.Add(hSizer)
         vSizer2.Add(self.list)
         mainSizer.Add(vSizer, 0, wx.ALL, 5)
@@ -78,7 +75,7 @@ class ExamplePanel(wx.Panel, listmix.ColumnSorterMixin):
         
     def OnClickPlot(self,event):
         if self.pathname != "":
-           self.plot()
+            self.plot()
         else:
            wx.LogError("First, must open a file")
 
@@ -95,6 +92,12 @@ class ExamplePanel(wx.Panel, listmix.ColumnSorterMixin):
         self.pathname = fileDialog.GetPath()
         self.list.DeleteAllItems()
         self.loadData()
+
+    def OnClickAbout(self, event):
+
+        wx.MessageBox('Window Information', 'About',
+            wx.OK | wx.ICON_INFORMATION)
+        
 
     def loadData(self):
 
